@@ -17,3 +17,5 @@ A simple Tetris game implemented in Python using the Pygame library.
 *   C: Hold piece
 *   P: Pause
 *   R: Restart (when game is over)
+
+##:D
