@@ -2,17 +2,20 @@ import pygame
 import random
 import sys
 
-# Инициализация
+# No images, only code :D
+
+
+
 pygame.init()
 
-# Константы
+
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 700
 GRID_WIDTH = 10
 GRID_HEIGHT = 20
 BLOCK_SIZE = 30
 
-# Темная тема
+
 DARK_THEME = {
     'background': (10, 10, 20),
     'grid': (30, 30, 40),
@@ -21,16 +24,16 @@ DARK_THEME = {
     'border': (60, 60, 80)
 }
 
-# Цвета фигур (яркие на темном фоне)
+
 COLORS = [
-    (0, 0, 0),        # Пустота
-    (255, 85, 85),    # Красный
-    (100, 200, 115),  # Зеленый
-    (65, 105, 225),   # Синий
-    (255, 140, 50),   # Оранжевый
-    (255, 215, 0),    # Желтый
-    (138, 43, 226),   # Фиолетовый
-    (0, 255, 255)     # Бирюзовый
+    (0, 0, 0),      
+    (255, 85, 85),  
+    (100, 200, 115),  
+    (65, 105, 225),   
+    (255, 140, 50),   
+    (255, 215, 0),    
+    (138, 43, 226),   
+    (0, 255, 255)     
 ]
 
 # Фигуры и их вращения
@@ -185,13 +188,13 @@ class TetrisApp:
         self.grid_y = SCREEN_HEIGHT - (GRID_HEIGHT + 2) * BLOCK_SIZE
     
     def draw_block(self, x, y, color, shadow=False):
-        # Основной блок
+        
         pygame.draw.rect(self.screen, color, 
                         (x+1, y+1, BLOCK_SIZE-2, BLOCK_SIZE-2))
         
-        # Эффект 3D
+      
         if not shadow:
-            # Светлые границы
+           
             pygame.draw.line(self.screen, 
                            (min(color[0]+60, 255), min(color[1]+60, 255), min(color[2]+60, 255)), 
                            (x+1, y+1), (x+BLOCK_SIZE-2, y+1), 2)
@@ -199,7 +202,7 @@ class TetrisApp:
                            (min(color[0]+60, 255), min(color[1]+60, 255), min(color[2]+60, 255)), 
                            (x+1, y+1), (x+1, y+BLOCK_SIZE-2), 2)
             
-            # Темные границы
+           
             pygame.draw.line(self.screen, 
                            (max(color[0]-60, 0), max(color[1]-60, 0), max(color[2]-60, 0)), 
                            (x+1, y+BLOCK_SIZE-2), (x+BLOCK_SIZE-2, y+BLOCK_SIZE-2), 2)
@@ -208,12 +211,12 @@ class TetrisApp:
                            (x+BLOCK_SIZE-2, y+1), (x+BLOCK_SIZE-2, y+BLOCK_SIZE-2), 2)
     
     def draw_grid(self):
-        # Фон игрового поля
+       
         pygame.draw.rect(self.screen, DARK_THEME['grid'], 
                         (self.grid_x, self.grid_y, 
                          GRID_WIDTH * BLOCK_SIZE, GRID_HEIGHT * BLOCK_SIZE))
         
-        # Сетка
+    
         for i in range(GRID_HEIGHT):
             for j in range(GRID_WIDTH):
                 pygame.draw.rect(self.screen, DARK_THEME['border'], 
@@ -228,7 +231,7 @@ class TetrisApp:
     
     def draw_current_piece(self):
         if self.game.piece:
-            # Тень фигуры
+            
             for i in range(4):
                 for j in range(4):
                     if i * 4 + j in self.game.piece.image():
@@ -236,7 +239,7 @@ class TetrisApp:
                                           self.grid_y + (self.game.piece.shadow_y + i) * BLOCK_SIZE, 
                                           COLORS[self.game.piece.color], shadow=True)
             
-            # Сама фигура
+           
             for i in range(4):
                 for j in range(4):
                     if i * 4 + j in self.game.piece.image():
@@ -246,11 +249,11 @@ class TetrisApp:
     
     def draw_next_piece(self):
         if self.game.next_piece:
-            # Заголовок
+           
             text = self.font.render("NEXT:", True, DARK_THEME['text'])
             self.screen.blit(text, (self.grid_x + GRID_WIDTH * BLOCK_SIZE + 30, 30))
             
-            # Предпросмотр фигуры
+            
             for i in range(4):
                 for j in range(4):
                     if i * 4 + j in SHAPES[self.game.next_piece.type][0]:
@@ -259,12 +262,12 @@ class TetrisApp:
                                      COLORS[self.game.next_piece.color])
     
     def draw_hold_piece(self):
-        # Заголовок
+   
         text = self.font.render("HOLD:", True, DARK_THEME['text'])
         self.screen.blit(text, (30, 30))
         
         if self.game.hold_piece:
-            # Удерживаемая фигура
+          
             for i in range(4):
                 for j in range(4):
                     if i * 4 + j in SHAPES[self.game.hold_piece.type][0]:
@@ -273,19 +276,19 @@ class TetrisApp:
                                      COLORS[self.game.hold_piece.color])
     
     def draw_info_panel(self):
-        # Счет
+       
         score_text = self.font.render(f"SCORE: {self.game.score}", True, DARK_THEME['text'])
         self.screen.blit(score_text, (30, 250))
         
-        # Уровень
+        
         level_text = self.font.render(f"LEVEL: {self.game.level}", True, DARK_THEME['text'])
         self.screen.blit(level_text, (30, 300))
         
-        # Линии
+      
         lines_text = self.font.render(f"LINES: {self.game.lines}", True, DARK_THEME['text'])
         self.screen.blit(lines_text, (30, 350))
         
-        # Управление
+        
         controls_text = [
             "CONTROLS:",
             "← → - Move",
@@ -302,12 +305,12 @@ class TetrisApp:
             self.screen.blit(control, (30, 400 + i * 25))
     
     def draw_game_over(self):
-        # Затемнение
+        
         overlay = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
         overlay.fill((0, 0, 0, 180))
         self.screen.blit(overlay, (0, 0))
         
-        # Текст
+      
         text = self.big_font.render("GAME OVER", True, (255, 85, 85))
         text_rect = text.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT//2 - 50))
         self.screen.blit(text, text_rect)
@@ -317,12 +320,12 @@ class TetrisApp:
         self.screen.blit(restart, restart_rect)
     
     def draw_pause_screen(self):
-        # Затемнение
+        
         overlay = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
         overlay.fill((0, 0, 0, 180))
         self.screen.blit(overlay, (0, 0))
         
-        # Текст
+      
         text = self.big_font.render("PAUSED", True, DARK_THEME['highlight'])
         text_rect = text.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT//2 - 50))
         self.screen.blit(text, text_rect)
@@ -338,7 +341,7 @@ class TetrisApp:
             if self.counter > 100000:
                 self.counter = 0
             
-            # Обработка событий
+           
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
@@ -368,24 +371,24 @@ class TetrisApp:
                     if event.key == pygame.K_DOWN:
                         self.pressing_down = False
             
-            # Игровая логика
+           
             if not self.game.paused and self.game.state == "start":
                 if self.counter % (self.fps // (self.game.level + 3)) == 0 or self.pressing_down:
                     self.game.step()
             
-            # Отрисовка
+            
             self.screen.fill(DARK_THEME['background'])
             
-            # Игровое поле
+            
             self.draw_grid()
             self.draw_current_piece()
             
-            # Интерфейс
+            
             self.draw_next_piece()
             self.draw_hold_piece()
             self.draw_info_panel()
             
-            # Состояния игры
+         
             if self.game.state == "gameover":
                 self.draw_game_over()
             elif self.game.paused:
@@ -397,7 +400,8 @@ class TetrisApp:
         pygame.quit()
         sys.exit()
 
-# Запуск игры
+
 if __name__ == "__main__":
     app = TetrisApp()
     app.run()
+
